@@ -7,58 +7,56 @@ import axios from 'axios'
 import {useNavigate}from 'react-router-dom' // changing the url (redirecting the web page)
 import '../../styles/AuthStyles.css';
 
-const Register = () => {
-    const[name , setName] = useState("");
+const Login = () => {
+
+   
     const[email , setEmail] = useState("");
     const[password , setPassword] = useState("");
-    const[phone , setPhone] = useState("");
-    const[address , setAddress] = useState("");
-    const[confirmPassword , setConfirmPassword]  = useState("");
+    
     const navigate = useNavigate();
 
-    // form functino
+
+    // FORM FUNCTION
     const handleSubmit = async (e)=>{
-       e.preventDefault();
-      if(password === confirmPassword){
-        try {
-             // axios send the data in as req.body where as it accept the res object from the backend
-            const res =  await axios.post(`${process.env.REACT_APP_API}/api/v1/auth/register`, {name , email , password , phone ,address});
-            if(res.data.status === "Success"){
-                toast.success(res.data.message);
-                function delayFunction() {
-                  // Your code here
-                  navigate('/login')
-                }
-              
-              setTimeout(delayFunction, 100);
-              
-                // now the page login to login page 
-                
-            }
-            else{
-                toast.error(res.data.message);
-            }
-
-
-        } catch (error) {
-          console.log(error);
-          toast.error("Something went wrong");
-        }
-      }
-      else{
-        toast.error("Password and Confirm Password does not match")
-      }
-    }
+        e.preventDefault();
+      
+         try {
+              // axios send the data in as req.body where as it accept the res object from the backend
+              const res =  await axios.post(`${process.env.REACT_APP_API}/api/v1/auth/login`, { email , password});
+             if(res.data.status === "Success"){
+                 toast.success(res.data.message);
+                 function delayFunction() {
+                   // Your code here
+                   navigate('/')
+                 }
+               
+               setTimeout(delayFunction, 100);
+               
+                 // now the page login to login page 
+                 
+             }
+             else{
+                 toast.error(res.data.message);
+             }
+ 
+ 
+         } catch (error) {
+           console.log(error);
+           toast.error("Something went wrong");
+         }
+       
+     }
 
 
   return (
-    <Layout title ={"Register"}>
+    <div>
+         <Layout title ={"Login"}>
       <div className='form-container'>
 
 <br/>
 <form onSubmit={handleSubmit}>
-<h2>Registration Form </h2>
-  <div className="mb-3">
+<h2>Login Form </h2>
+  {/* <div className="mb-3">
     
     <input 
     placeholder='Enter Your Name'
@@ -70,7 +68,7 @@ const Register = () => {
     required 
     aria-describedby="emailHelp" />
 
-  </div>
+  </div> */}
   <div className="mb-3">
 
     <input 
@@ -95,7 +93,7 @@ const Register = () => {
     aria-describedby="emailHelp" />
   </div>
  
-  <div className="mb-3">
+  {/* <div className="mb-3">
     <input 
     placeholder='Confirm Password' 
     value={confirmPassword}
@@ -104,9 +102,9 @@ const Register = () => {
     className="form-contaqiner" 
     required
     id="exampleInputPassword1" />
-  </div>
+  </div> */}
   
-   <div className="mb-3 ">
+   {/* <div className="mb-3 ">
     <input 
     placeholder='Enter Your Phone' 
     value={phone}
@@ -115,8 +113,8 @@ const Register = () => {
     className="form-coqntainer" 
     required
     id="exampleInputPassword1" />
-  </div>
-  <div className="mb-3">
+  </div> */}
+  {/* <div className="mb-3">
     <input 
     placeholder='Enter Your Address' 
     value={address} 
@@ -125,7 +123,7 @@ const Register = () => {
     className="form-contqainer" 
     required
     id="exampleInputPassword1" />
-  </div>
+  </div> */}
 
     
   <spam></spam>  
@@ -133,13 +131,15 @@ const Register = () => {
   <button 
   type="submit" 
   className="btn btn-primary">
-    Register
+    Login
     </button>
 </form>
 
       </div>
     </Layout>
+      
+    </div>
   )
 }
 
-export default Register;
+export default Login
