@@ -24,10 +24,11 @@ const Register = () => {
              // axios send the data in as req.body where as it accept the res object from the backend
             const res =  await axios.post(`${process.env.REACT_APP_API}/api/v1/auth/register`, {name , email , password , phone ,address});
             if(res.data.status === "Success"){
-                toast.success(res.data.message);
+              navigate('/login');
                 function delayFunction() {
                   // Your code here
-                  navigate('/login')
+                  toast.success(res.data.message);
+                  
                 }
               
               setTimeout(delayFunction, 100);

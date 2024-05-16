@@ -1,71 +1,47 @@
-import React , {useState , useEffect} from 'react'
+import React from 'react'
 import Layout from '../../components/LayOut/LayOut'
+import {useNavigate  } from "react-router-dom";
 import { IoIosWarning } from "react-icons/io";
 import toast  from 'react-hot-toast';
 // import { ToastContainer, toast } from 'react-toastify';
 import axios from 'axios'
-import {useNavigate}from 'react-router-dom' // changing the url (redirecting the web page)
+
 import '../../styles/AuthStyles.css';
 import { useAuth } from '../../context/auth';
 
-const Login = () => {
-
-   
-    const[email , setEmail] = useState("");
-    const[password , setPassword] = useState("");
-    const[auth , setAuth ] = useAuth();
-    
+const Logout = () => {
+    const [auth , setAuth] = useAuth();
     const navigate = useNavigate();
 
-
-    // FORM FUNCTION
-    const handleSubmit = async (e)=>{
-        e.preventDefault();
+    const handleSubmit = ()=>{
+      setAuth({
+        ...auth,
+        user:null,
+        token :" "
+      })
+      localStorage.removeItem('auth');
+       function temp(){
+        toast.success("Logout Successfully");
+       }
+       setTimeout(temp , 100);
+    
       
-         try {
-              // axios send the data in as req.body where as it accept the res object from the backend
-              const res =  await axios.post(`${process.env.REACT_APP_API}/api/v1/auth/login`, { email , password});
-             if(res.data.status === "Success"){
-                 
-                 setAuth({
-                  ...auth , 
-                  user : res.data.user,
-                  token : res.data.token,
-                 })
-                 // now we need to save the state into the setItems into localStorage
-                 localStorage.setItem('auth' , JSON.stringify(res.data));
-                 navigate('/')
-                 function delayFunction() {
-                   // Your code here
-                   toast.success(res.data.message);
-                 }
-               
-               setTimeout(delayFunction, 100);
-               
-                 // now the page login to login page 
-                 
-             }
-             else{
-                 toast.error(res.data.message);
-             }
- 
- 
-         } catch (error) {
-           console.log(error);
-           toast.error("Something went wrong");
-         }
-       
-     }
-
+        // Your code here
+        navigate('/login');
+      
+    
+    
+     
+    }
 
   return (
     <div>
-         <Layout title ={"Login"}>
+         <Layout title ={"LogOut"}>
       <div className='form-container'>
 
 <br/>
 <form onSubmit={handleSubmit}>
-<h2>Login Form </h2>
+<h2>Are you Sure want to logut </h2>
   {/* <div className="mb-3">
     
     <input 
@@ -79,7 +55,7 @@ const Login = () => {
     aria-describedby="emailHelp" />
 
   </div> */}
-  <div className="mb-3">
+  {/* <div className="mb-3">
 
     <input 
     placeholder='Enter Your Gmail' 
@@ -101,7 +77,7 @@ const Login = () => {
     id="exampleInputEmail1" 
     required
     aria-describedby="emailHelp" />
-  </div>
+  </div> */}
  
   {/* <div className="mb-3">
     <input 
@@ -141,7 +117,7 @@ const Login = () => {
   <button 
   type="submit" 
   className="btn btn-primary">
-    Login
+    Are You Sure want to Logout ??
     </button>
 </form>
 
@@ -152,4 +128,4 @@ const Login = () => {
   )
 }
 
-export default Login
+export default Logout
