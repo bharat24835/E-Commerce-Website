@@ -10,12 +10,21 @@ import { ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Login from './pages/Auth/Login';
 import Logout from './pages/Auth/Logout';
+import Dashboard from './pages/user/Dashboard.js';
+import PrivateRoute from './components/Routes/Private.js';
 
 function App() {
   return (
     <>
    <Routes>
    <Route path = '/'  element = {<HomePage/>} />
+   
+   {/* nesting se  routes protected rehte hai */}
+   <Route path = "/dashboard" element ={<PrivateRoute/>}>
+
+         <Route path = ""  element = {<Dashboard/>} />
+
+   </Route>
    <Route path = '/register'  element = {<Register/>} />
    <Route path = '/login'  element = {<Login/>} />
    <Route path = '/logout'  element = {<Logout/>} />

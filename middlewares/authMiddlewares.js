@@ -4,7 +4,7 @@ import userModel from '../models/userModel.js';
 // protected routes token base
 // authenticate user
 
-export const requireSignIn = async(req, res , next)=>{
+export const requireSignIn = (req, res , next)=>{
 try {
     const decode = JWT.verify(req.headers.authorization , process.env.JWT_SECRET) ;
     // decode give the user_id , (id ko toh voh token mai convert kiya tha )
