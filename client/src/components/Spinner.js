@@ -1,23 +1,25 @@
 import React , {useState , useEffect} from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 const Spinner = () => {
-    const[count ,setCount] = useState(5);
+    const[count ,setCount] = useState(3);
     const navigate = useNavigate();
-
+    const location = useLocation();
    useEffect(()=>{
        const interval = setInterval(()=>{
                setCount((preValue)=> --preValue)
         }, 1000);   
-        count === 0 &&  navigate('/login')  ;
+        count === 0 &&  navigate("/login" , {
+          state:location.pathname,
+        });  
         return ()=> clearInterval(interval);
 
-   } , [count , navigate]);
+   } , [count , navigate , location]);
 
   return (
     <>
     <div className="d-flex justify-content-center align-items-center " style={{height: "85vh"}}>
-        <h1 className='Text-center'> Please wait , someone good is waiting for you  in {count} seconds </h1>
+        <h1 className='Text-center'> Redirecting you  in {count} seconds </h1>
   <div className="spinner-border" role="status">
     <span className="visually-hidden">Loading...</span>
   </div>

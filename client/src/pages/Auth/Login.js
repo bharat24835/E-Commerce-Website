@@ -4,7 +4,7 @@ import { IoIosWarning } from "react-icons/io";
 import toast  from 'react-hot-toast';
 // import { ToastContainer, toast } from 'react-toastify';
 import axios from 'axios'
-import {useNavigate}from 'react-router-dom' // changing the url (redirecting the web page)
+import {useNavigate , useLocation}from 'react-router-dom' // changing the url (redirecting the web page)
 import '../../styles/AuthStyles.css';
 import { useAuth } from '../../context/auth';
 
@@ -16,6 +16,7 @@ const Login = () => {
     const[auth , setAuth ] = useAuth();
     
     const navigate = useNavigate();
+    const location = useLocation();
 
 
     // FORM FUNCTION
@@ -34,7 +35,7 @@ const Login = () => {
                  })
                  // now we need to save the state into the setItems into localStorage
                  localStorage.setItem('auth' , JSON.stringify(res.data));
-                 navigate('/')
+                 navigate( location.state || '/')
                  function delayFunction() {
                    // Your code here
                    toast.success(res.data.message);
