@@ -7,7 +7,7 @@ export const registerController = async(req, res)=>{
     
    try {
     
-   const {name , email , password , phone ,address} =req.body;
+   const {name , email , password , phone ,address , answer} =req.body;
    //validations
    if(!name){
     return res.send({status : 'Failed' , message :"Name is Required"});
@@ -24,6 +24,9 @@ export const registerController = async(req, res)=>{
    if(!address){
     return res.send({status : 'Failed' , message :"Address is Required"});
    }
+   if(!answer){
+    return res.send({status : 'Failed' , message :"Answer is Required"});
+   }
    
    // check current user is previous registered or not
    const ExistingUser = await userModel.findOne({email : email});
@@ -34,7 +37,7 @@ export const registerController = async(req, res)=>{
    // register the user
    const hashedPassword = await hashPassword(password);
    //save
-    const user = await new userModel({name , email , phone , address, password: hashedPassword}).save();
+    const user = await new userModel({name , email , phone , address, password: hashedPassword , answer} ).save();
     res.status(201).send({status : 'Success' , message :"User Registered Successfully"});
 
 
@@ -77,10 +80,12 @@ export const loginController = async(req , res)=>{
         expiresIn : "7d",
     });
     res.status(200).send({status : "Success"  , message : "Login Successfully"  , user : {
+        _id : user._id,
         name : user.name,
         email : user.email,
         address : user.address,
-        phone : user.phone
+        phone : user.phone,
+        role : user.role
     } ,  token })
 
 
@@ -91,6 +96,47 @@ export const loginController = async(req , res)=>{
   }
 
 }
+
+export const forgotPasswordController = async(req ,res)=>{
+  // console.log("Entered in Forget Password Controller");
+ 
+  try {
+
+    const {email , answer   , newPassword} = req.body;
+
+    if(!email){
+     return  res.status(400).send({status  :"Failed" , message  : "Email is required" })
+    }
+
+    if(!answer){
+     return res.status(400).send({status  :"Failed" , message  : "Answer is required" })
+    }
+    if(!newPassword){
+       return res.status(400).send({status  :"Failed" , message  : "NewPassword  is required" })
+    }
+
+    // check 
+    const user = await userModel.findOne({email : email , answer : answer})
+
+    // validation
+    if(!user){
+      return res.status(404).send({status : "Failed" , message : "Wrong Email or Answer"});
+    }
+
+    const hashed = await hashPassword(newPassword);
+    await userModel.findByIdAndUpdate(user._id , {password : hashed});
+    return res.status(200).send({
+      status : "Success" , message  :"Password Changed Successfully"
+    });
+    
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({status : "Failed"  , message :"Something went wrong" , error});
+  }
+}
+
+
+
 export const testController = (req , res)=>{
     console.log("Protected ROutes");
     res.send({message: "Protected Routes"}); 

@@ -1,21 +1,22 @@
-import React , {useState } from 'react'
+import React ,{useState} from 'react'
 import Layout from '../../components/LayOut/LayOut'
 import toast  from 'react-hot-toast';
 // import { ToastContainer, toast } from 'react-toastify';
 import axios from 'axios'
 import {useNavigate , useLocation}from 'react-router-dom' // changing the url (redirecting the web page)
 import '../../styles/AuthStyles.css';
-import { useAuth } from '../../context/auth';
 
-const Login = () => {
 
-   
+
+const Forgot_password = () => {
+     
     const[email , setEmail] = useState("");
-    const[password , setPassword] = useState("");
-    const[auth , setAuth ] = useAuth();
+    const[newPassword , setnewPassword] = useState("");
+    const[answer, setAnswer] = useState("");
+    
     
     const navigate = useNavigate();
-    const location = useLocation();
+    // const location = useLocation();
 
 
     // FORM FUNCTION
@@ -24,17 +25,16 @@ const Login = () => {
       
          try {
               // axios send the data in as req.body where as it accept the res object from the backend
-              const res =  await axios.post(`${process.env.REACT_APP_API}/api/v1/auth/login`, { email , password});
+              console.log("Before Axios");
+              // const res =  await axios.post(`${process.env.REACT_APP_API}/api/v1/auth/login`, { email , password});
+
+              const res =  await axios.post(`${process.env.REACT_APP_API}/api/v1/auth/forgot-password`, { email , answer , newPassword});
+              console.log("After Axios");
              if(res.data.status === "Success"){
                  
-                 setAuth({
-                  ...auth , 
-                  user : res.data.user,
-                  token : res.data.token,
-                 })
-                 // now we need to save the state into the setItems into localStorage
-                 localStorage.setItem('auth' , JSON.stringify(res.data));
-                 navigate( location.state || '/')
+                
+                
+                 navigate( '/login')
                  function delayFunction() {
                    // Your code here
                    toast.success(res.data.message);
@@ -57,15 +57,14 @@ const Login = () => {
        
      }
 
-
   return (
-    <div>
-         <Layout title ={"Login"}>
-      <div className='form-container'>
+   
+   <Layout title={"Reset Password"}>
+   <div className='form-container'>
 
 <br/>
 <form onSubmit={handleSubmit}>
-<h2>Login Form </h2>
+<h2>Reset Password </h2>
   {/* <div className="mb-3">
     
     <input 
@@ -93,10 +92,21 @@ const Login = () => {
   </div>
   <div className="mb-3">
     <input 
-    placeholder='Password' 
-    value={password} 
-    onChange={(e)=> setPassword(e.target.value)} 
+    placeholder='Enter New Password' 
+    value={newPassword} 
+    onChange={(e)=> setnewPassword(e.target.value)} 
     type="password" 
+    className="form-contaiqner" 
+    id="exampleInputEmail1" 
+    required
+    aria-describedby="emailHelp" />
+  </div>
+  <div className="mb-3">
+    <input 
+    placeholder='What is your fav Best Batsman in Indian Team ?' 
+    value={answer} 
+    onChange={(e)=> setAnswer(e.target.value)} 
+    type="text" 
     className="form-contaiqner" 
     id="exampleInputEmail1" 
     required
@@ -138,26 +148,19 @@ const Login = () => {
     
   <spam></spam>  
  
- <div className='mb-3'>
- <button 
-  type="button" onClick={()=>{navigate('/forget-password')}} 
-  className="btn btn-primary">
-    Forgot Password
-    </button>
- </div>
+
 
   <button 
   type="submit" 
   className="btn btn-primary">
-    Login
+    Reset
     </button>
 </form>
 
       </div>
-    </Layout>
-      
-    </div>
+   </Layout>
+   
   )
 }
 
-export default Login
+export default Forgot_password
