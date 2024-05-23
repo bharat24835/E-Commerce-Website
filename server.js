@@ -6,6 +6,7 @@ import connectDB from './config/db.js';
 import authRoutes from './routes/authRoute.js'
 import cors from 'cors'
 import categoryRoute from './routes/categoryRoute.js'
+import productRoute from './routes/productRoute.js'
 
 // config env
 dotenv.config();
@@ -25,6 +26,7 @@ app.use(express.json());
 // router
 app.use('/api/v1/auth' , authRoutes)
 app.use('/api/v1/category' , categoryRoute)
+app.use('/api/v1/product' , productRoute)
 
 
 // rest api
