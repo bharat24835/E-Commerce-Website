@@ -39,7 +39,7 @@ export const updateCategoryController = async(req ,res)=>{
 export const getCategoryController = async(req ,res)=>{
      try {
         const category = await categoryModel.find({});
-        res.status(200).send({status :"Suceess" , message : "All Categories List" , category})
+        res.status(200).send({status :"Success" , message : "All Categories List" , category})
 
      } catch (error) {
         console.log(error);
@@ -54,7 +54,7 @@ export const getSingleCategoryController = async(req ,res)=>{
 
         const{slug} = req.params;
        const category = await categoryModel.findOne({slug : slug });
-       res.status(200).send({status :"Suceess" , message : "Particular Category List" , category})
+       res.status(200).send({status :"Success" , message : "Particular Category List" , category})
 
     } catch (error) {
        console.log(error);
@@ -67,7 +67,7 @@ export const  deleteCategoryController = async(req ,res)=>{
 
         const{id} = req.params;
         await categoryModel.findByIdAndDelete(id );
-       res.status(200).send({status :"Suceess" , message : "Particular Category get Deleted" })
+       res.status(200).send({status :"Success" , message : "Particular Category get Deleted" })
 
     } catch (error) {
        console.log(error);
