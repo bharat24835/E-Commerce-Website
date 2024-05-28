@@ -35,7 +35,7 @@ export const createProductController = async(req, res)=>{
             product.photo.contentType = photo.type;
         }
         await product.save();
-        res.status(201).send({status : "Success" ,  message  : "Product Created Successfully " , product });
+        res.status(201).send({status : "Success" ,  message  : ` "${name}" Product Created Successfully ` , product });
         
     } catch (error) {
         console.log(error);

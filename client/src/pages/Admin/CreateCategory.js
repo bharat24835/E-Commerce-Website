@@ -22,6 +22,7 @@ const CreateCategory = () => {
       const{data} = await axios.post(`${process.env.REACT_APP_API}/api/v1/category/create-category` , {name});
       if(data.status === "Success"){
         toast.success(`"${name}" Category is created`);
+        setName("");
         getAllCategory();
       }
       else{

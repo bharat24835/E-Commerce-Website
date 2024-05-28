@@ -113,3 +113,10 @@
   flex-direction: column;
   
 } */
+
+/* ########################### show all product page  */
+
+.product-link{
+  text-decoration: none !important;
+  color : black !important;
+}
