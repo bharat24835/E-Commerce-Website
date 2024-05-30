@@ -32,9 +32,9 @@ const Products = () => {
         <div className='col-md-3'>
             <AdminMenu/>
         </div>
-        <div className='col-md-9'>
+        <div className='col-md-9' >
                <h1 className='text-center'> All Product List</h1>
-               <div className='d-flex'>
+               <div className='d-flex flex-wrap'>
                {products?.map(p =>(
                 <Link key = {p._id} to  = {`/dashboard/admin/product/${p.slug}`} className='product-link'>
 <div className="card m-2" style={{width: '18rem'}} >

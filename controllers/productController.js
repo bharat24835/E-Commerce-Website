@@ -2,6 +2,7 @@ import productModel from "../models/productModel.js";
 import slugify from "slugify";
 // slugify is used to remove white spaces from the string , so that we can easily pass them in req.params
 import fs from 'fs'
+// import { getSingleProductController } from './productController';
 
 export const createProductController = async(req, res)=>{
     try { 
@@ -93,6 +94,8 @@ export const getProductPhotoController = async(req ,res)=>{
     }
 }
 
+// delete the product
+
 export const deleteProductController   =async(req ,res)=>{
     try {
         
@@ -106,6 +109,8 @@ export const deleteProductController   =async(req ,res)=>{
     }
 }
 
+
+// update the product data
 export const updateProductController = async(req ,res)=>{
     try {
 
@@ -148,3 +153,58 @@ export const updateProductController = async(req ,res)=>{
 
     }
 } 
+
+// filter the product
+
+export const productFilterController = async(req ,res)=>{
+    try {
+        const{checked, radio}  =req.body;
+        let  args = {}
+        // there are the queries that are stored in args
+        if(checked.length > 0 ) args.category = checked
+        if(radio.length ) args.price = {$gte:radio[0] , $lte:radio[1]}
+        const products = await productModel.find(args);
+        res.status(201).send({status : "Success" , message : "Products are filtered" , products} );
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({status : "Failed" , message  : "Error while Filtering Product " , error})
+    }
+}
+
+
+// getting the total number of Products
+export const getProductCountController = async(req ,res)=>{
+    try {
+        const total  = await productModel.find({}).estimatedDocumentCount();
+        res.status(200).send({status : "Success" , message : "Products Count Find . " , total} );
+
+        
+    } catch (error) {
+        console.log(error);
+        res.status(400).send({status : "Failed" , message  : "Error while Retrieving Product Count " , error})
+
+    }
+}
+
+
+// getting the list of products per page`
+export const productListController = async(req ,res)=>{
+    try {
+        const perPage = 3;
+        const page = req.params.page ? req.params.page : 1 
+        const products = await productModel
+        .find({})
+        .select("-photo")
+        .skip((page-1)*perPage)
+        .limit(perPage)
+        .sort({createdAt : -1});
+        res.status(200).send({status : "Success" , message : "Products List is Created . " , products} );
+
+        
+        
+    } catch (error) {
+        console.log(error);
+        res.status(400).send({status : "Failed" , message  : "Error while Retrieving Product List per page " , error})
+
+    }
+}
