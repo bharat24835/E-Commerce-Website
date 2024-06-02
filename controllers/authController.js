@@ -1,6 +1,7 @@
 import { comparePassword, hashPassword } from "../helpers/authHelper.js";
 import userModel from "../models/userModel.js";
 import JWT from 'jsonwebtoken'
+// import { hashPassword } from './../helpers/authHelper.js';
 
 
 export const registerController = async(req, res)=>{
@@ -139,7 +140,44 @@ export const forgotPasswordController = async(req ,res)=>{
 
 export const testController = (req , res)=>{
     console.log("Protected ROutes");
-    res.send({message: "Protected Routes"}); 
+    res.send({message: "Protected Routes"});
 }
 
+
+// update profile controller
+
+export const updateProfileController  = async (req,res)=>{
+    
+    
+  try {
+    console.log("We are in Backend 1");
+    const {name, email , password , phone , address  } = req.body;
+    const user = await userModel.findById(req.user._id);
+    
+  
+
+    // password check
+    if(password && password.length < 6){
+           return res.json({error : "Password is required and 6 Character long" });
+    }
+    const hashedPassword = password ? await hashPassword(password) : undefined;
+    const updatedUser = userModel.findByIdAndUpdate( req.user._id, {
+      name : name || user.name ,
+      password : hashedPassword || user.password,
+      phone : phone || user.phone,
+      email : email || user.email,
+      address : address || user.address ,
+      answer : user.answer 
+    } , {new:true})
+    console.log("We are in Backend 2");
+
+   return res.send({status : "Success" , message : " Profile Updated Successfully " });
+    
+  } catch (error) {
+    console.log(error);
+    res.status(400).send({status : "Failed"  , message :"Error while Updating Profile" , error});
+
+  }
+
+}
 

@@ -5,10 +5,14 @@ import { useAuth } from "../../context/auth";
 import Register from './../../pages/Auth/Register';
 import SearchInput from "../Form/SearchInput";
 // import Dashboard from './../../pages/user/Dashboard';
-
+import useCategory from "../../hooks/useCategory";
+import { useCart } from "../../context/cart";
+import  {Badge} from 'antd'
 
 const Header = ()=>{
     const [auth , setAuth] = useAuth();
+    const [cart , setCart] = useCart(); 
+    const categories = useCategory();
 
     const handleLogout = ()=>{
       setAuth({
@@ -33,9 +37,25 @@ const Header = ()=>{
         <li className="nav-item">
           <NavLink to = "/" className="nav-link"  >Home</NavLink>
         </li>
-        <li className="nav-item">
-          <NavLink to = "/category" className="nav-link"  >Categories</NavLink>
-        </li>
+        <li className="nav-item dropdown">
+  <Link className="nav-link dropdown-toggle" to ={"/categories"} href="#"  data-bs-toggle="dropdown" >
+    Categories
+  </Link>
+  <ul className="dropdown-menu">
+    <li>
+    <Link className="dropdown-item" to= {`/categories`} href="#">All Categories</Link>
+    </li>
+  {categories?.map((c)=> (
+    
+    <li><Link className="dropdown-item" to= {`/category/${c.slug}`} href="#">{c.name}</Link></li>
+   
+  
+  ))}
+  </ul>
+  
+</li>
+
+        
         {
           !auth.user ? 
           (<>
@@ -74,7 +94,10 @@ const Header = ()=>{
         </>)
         }
         <li className="nav-item">
-          <NavLink to = "/cart" className="nav-link" >Cart (0)</NavLink>
+        <Badge count={cart?.length} showZero>
+        <NavLink to = "/cart" className="nav-link" >Cart </NavLink>
+        </Badge>
+          
         </li>
         
       </ul>

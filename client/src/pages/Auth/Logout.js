@@ -19,6 +19,9 @@ const Logout = () => {
         user:null,
         token :" "
       })
+      // also we need to remove out Authorization from axios headers
+      axios.defaults.headers.common['Authorization'] = ``;
+
       localStorage.removeItem('auth');
        function temp(){
         toast.success("Logout Successfully");

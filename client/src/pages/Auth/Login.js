@@ -32,6 +32,7 @@ const Login = () => {
                   user : res.data.user,
                   token : res.data.token,
                  })
+                 axios.defaults.headers.common['Authorization'] = `${auth?.token}`;
                  // now we need to save the state into the setItems into localStorage
                  localStorage.setItem('auth' , JSON.stringify(res.data));
                  navigate( location.state || '/')

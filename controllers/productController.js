@@ -1,4 +1,5 @@
 import productModel from "../models/productModel.js";
+import categoryModel from "../models/categoryModel.js";
 import slugify from "slugify";
 // slugify is used to remove white spaces from the string , so that we can easily pass them in req.params
 import fs from 'fs'
@@ -229,4 +230,44 @@ export const searchProductController = async(req ,res)=>{
         res.status(400).send({status : "Failed" , message  : "Error while Searching the Product " , error})
 
     }
+}
+
+
+// search teh related product controller
+
+export const relatedProductController =  async(req ,res)=>{
+    try {
+
+        const{pid , cid} = req.params;
+
+        const products = await productModel.find({
+            category : cid,
+            _id  : {$ne : pid}
+        }).select('-photo').limit(3).populate("category");
+
+        res.status(200).send({
+            status:  "Success" , message : "Related Product Searched Successfully" , products 
+        })
+
+        
+    } catch (error) {
+        console.log(error);
+        res.status(400).send({status : "Failed" , message : "Error while searching related product "  , error});
+    }
+}
+
+
+// get all product of particular category 
+
+export const productCategoryController = async(req, res)=>{
+try {
+    // since product mai sirf category ki id hai na ki uski information , so we moving towards category modek to get its id from particular category slug
+    const category = await categoryModel.findOne({slug: req.params.slug});
+    const products = await productModel.find({category}).populate('category')
+    res.status(200).send({status :  "Success" ,message : "Retrived Successfully" , category ,products});
+} catch (error) {
+    console.log(error);
+    res.status(400).send({status : "Failed" , message : "Error while Retrieving Products of a category  "  , error});
+
+}
 }
