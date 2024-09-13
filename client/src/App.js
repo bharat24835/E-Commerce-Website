@@ -5,6 +5,8 @@ import Contact from './pages/Contact';
 import Policy from './pages/Policy';
 import Pagenotfound from './pages/Pagenotfound';
 import Register from './pages/Auth/Register';
+import './App.css'
+
 
 // import { ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -27,6 +29,7 @@ import ProductDetails from './pages/ProductDetails.js';
 import Categories from './pages/Categories.js';
 import CategoryProduct from './pages/CategoryProduct.js';
 import CartPage from './pages/CartPage.js';
+import Reset1 from './pages/Forget-Password/Reset1.js'
 
 function App() {
   return (
@@ -38,6 +41,7 @@ function App() {
    <Route path = '/cart'  element = {<CartPage/>} />
    <Route path = '/category/:slug'  element = {<CategoryProduct/>} />
    <Route path = '/search' element = {<Search/>} />
+   <Route path = '/forget-password' element = {<Reset1/>}/>
    
    {/* nesting se  routes protected rehte hai */}
    <Route path = "/dashboard" element ={<PrivateRoute/>}>
