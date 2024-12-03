@@ -97,31 +97,29 @@ export const loginController = async(req , res)=>{
   }
 
 }
-
-export const forgotPasswordController = async(req ,res)=>{
+// password reset controller 
+export const resetPasswordController = async(req ,res)=>{
   // console.log("Entered in Forget Password Controller");
  
   try {
 
-    const {email , answer   , newPassword} = req.body;
+    const {email   , newPassword} = req.body;
 
     if(!email){
      return  res.status(400).send({status  :"Failed" , message  : "Email is required" })
     }
 
-    if(!answer){
-     return res.status(400).send({status  :"Failed" , message  : "Answer is required" })
-    }
+    
     if(!newPassword){
        return res.status(400).send({status  :"Failed" , message  : "NewPassword  is required" })
     }
 
     // check 
-    const user = await userModel.findOne({email : email , answer : answer})
+    const user = await userModel.findOne({email : email})
 
     // validation
     if(!user){
-      return res.status(404).send({status : "Failed" , message : "Wrong Email or Answer"});
+      return res.status(404).send({status : "Failed" , message : "Wrong Email "});
     }
 
     const hashed = await hashPassword(newPassword);
@@ -135,6 +133,9 @@ export const forgotPasswordController = async(req ,res)=>{
     res.status(500).send({status : "Failed"  , message :"Something went wrong" , error});
   }
 }
+
+
+
 
 
 

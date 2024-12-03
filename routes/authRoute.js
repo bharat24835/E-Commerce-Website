@@ -1,6 +1,6 @@
 import express from 'express';
-import {registerController , loginController ,testController, forgotPasswordController, updateProfileController} from '../controllers/authController.js';
-import { requireSignIn , isAdmin} from '../middlewares/authMiddlewares.js';
+import {registerController , loginController ,testController, updateProfileController,resetPasswordController} from '../controllers/authController.js';
+import { requireSignIn , isAdmin , password_reset ,generateOTP ,SendMail } from '../middlewares/authMiddlewares.js';
 
 // router object
 
@@ -18,7 +18,8 @@ router.post('/register' , registerController )
 router.post('/login', loginController)
 
 // Forgot Password || POST 
-router.post('/forgot-password' , forgotPasswordController);
+router.post('/forgot-password' , password_reset , generateOTP ,   SendMail );
+router.post('/reset-password' ,  resetPasswordController)
 
 
 // test route 
