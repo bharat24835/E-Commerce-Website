@@ -7,6 +7,7 @@ import authRoutes from './routes/authRoute.js'
 import cors from 'cors'
 import categoryRoute from './routes/categoryRoute.js'
 import productRoute from './routes/productRoute.js'
+import path from 'path'
 
 // config env
 dotenv.config();
@@ -22,6 +23,7 @@ const app = express();
 app.use(cors());
 app.use(morgan('dev'));
 app.use(express.json());
+app.use(express.static(path.join(__dirname , './client/build')))
 
 // router
 app.use('/api/v1/auth' , authRoutes)
@@ -29,12 +31,13 @@ app.use('/api/v1/category' , categoryRoute)
 app.use('/api/v1/product' , productRoute)
 
 
+
+
 // rest api
-app.get('/'  , (req,res)=>{
-  res.send({
-    message : "Welcome to ECommerce App"
-  })
+app.use('*', function(req ,res){
+  res.sendFile(path.join(__dirname , './client/build/index.html'));
 })
+
 
 
 // run lister

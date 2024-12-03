@@ -32,7 +32,7 @@ function App() {
   return (
     <>
    <Routes>
-   <Route path = '/'  element = {<HomePage/>} />
+   {/* <Route path = '/'  element = {<HomePage/>} /> */}
    <Route path = '/product/:slug'  element = {<ProductDetails/>} />
    <Route path = '/categories'  element = {<Categories/>} />
    <Route path = '/cart'  element = {<CartPage/>} />
@@ -58,7 +58,7 @@ function App() {
    </Route>
    <Route path = '/register'  element = {<Register/>} />
    <Route path = '/forget-password'  element = {<Forgot_password/>} />
-   <Route path = '/login'  element = {<Login/>} />
+   <Route path = '/'  element = {<Login/>} />
    <Route path = '/logout'  element = {<Logout/>} />
    <Route path = '/about'  element = {<About/>} />
    <Route path = '/contact'  element = {<Contact/>} />
